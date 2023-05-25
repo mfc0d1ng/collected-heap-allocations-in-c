@@ -134,7 +134,7 @@ void heap_free(void *__add)
 }
 
 
-void show_recored(void)
+void show_record(void)
 {
     size_t i = 0;
     printf("%c", '{');
