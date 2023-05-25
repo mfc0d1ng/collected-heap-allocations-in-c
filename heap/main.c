@@ -19,8 +19,8 @@ int main(void)
     // show_record();    
     
     /*  
-        // Try this
-        free(ptr);
+    // Try this
+    free(ptr);
     */
     
     /*
