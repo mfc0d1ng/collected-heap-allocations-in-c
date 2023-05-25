@@ -17,7 +17,7 @@ extern void *heap_calloc(size_t __nmemb, size_t __size);
 extern void heap_free(void *__add);
 
 /* Show the starting addresses of all the allocated memory blocks. */
-extern void show_recored(void);
+extern void show_record(void);
 
 /* Free all the memory allocated by `heap_malloc', `heap_realloc' or `heap_calloc'.. */
 extern void tear_down(void);
