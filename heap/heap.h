@@ -19,7 +19,7 @@ extern void heap_free(void *__add);
 /* Show the starting addresses of all the allocated blocks. */
 extern void show_recored(void);
 
-/* Free all the memory blocks. */
+/* Free all the memory allocated by `heap_malloc', `heap_realloc' or `heap_calloc'.. */
 extern void tear_down(void);
 
 #define _Hardcoded_mode_   0x0
