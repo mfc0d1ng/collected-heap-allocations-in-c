@@ -16,7 +16,7 @@ int main(void)
 
     puts(ptr);
 
-    // show_recored();    
+    // show_record();    
     
     /*  
         // Try this
