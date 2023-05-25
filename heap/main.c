@@ -24,6 +24,7 @@ int main(void)
     */
     
     /*
+    // Try this
     for(int i = 0; i < 1000000; i++)
     {
         heap_malloc(20);
