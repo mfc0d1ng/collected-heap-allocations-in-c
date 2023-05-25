@@ -23,5 +23,12 @@ int main(void)
         free(ptr);
     */
     
+    /*
+    for(int i = 0; i < 1000000; i++)
+    {
+        heap_malloc(20);
+    }
+    show_recored();
+    */
     return EXIT_SUCCESS;
 }
