@@ -16,7 +16,7 @@ struct __node
 {
     struct location location;
     struct __node *next;
-};
+}__attribute__((packed));
 
 static struct __node *record = NULL;
 
