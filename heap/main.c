@@ -29,7 +29,7 @@ int main(void)
     {
         heap_malloc(20);
     }
-    show_recored();
+    show_record();
     */
     return EXIT_SUCCESS;
 }
