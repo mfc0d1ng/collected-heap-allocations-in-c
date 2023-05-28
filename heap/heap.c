@@ -154,10 +154,6 @@ void show_record(void)
 
 void tear_down(void)
 {
-    if(record == NULL)
-    {
-        return;
-    }
     struct __node *tmp = NULL;
     for(; record; )
     {
