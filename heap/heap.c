@@ -6,17 +6,11 @@
 #define memerror  "Out of memory, program terminated."
 #define ptrerror  "Invalid pointer, program terminated."
 
-struct location
-{
-    void *heap_location;
-    unsigned char status;
-}__attribute__((packed));
-
 struct __node
 {
-    struct location location;
+    void *location;
     struct __node *next;
-}__attribute__((packed));
+};
 
 static struct __node *record = NULL;
 
@@ -32,14 +26,14 @@ static void print_ptrerror(void)
     exit(0x2);
 }
 
-static void push_location(struct location *__loc)
+static void push_location(void *__loc)
 {
-    struct __node *new_node = (struct __node *) malloc(sizeof(struct __node));
+    struct __node *new_node = (struct __node *) malloc(sizeof(void *));
     if(new_node == NULL)
     {
         print_memerror();
     }
-    new_node->location = *__loc;
+    new_node->location = __loc;
     new_node->next = record;
     record = new_node;
 }
@@ -50,8 +44,7 @@ void *heap_malloc(size_t __size)
     void *heap_ptr = malloc(__size);
     if(heap_ptr != NULL)
     {
-        struct location __loc = {heap_ptr, __alloc};
-        push_location(&__loc); 
+        push_location(heap_ptr); 
     }   
     else
     {
@@ -73,11 +66,10 @@ void *heap_realloc(void *__prev, size_t __size)
     {
         for(struct __node *current = record; current; current = current->next)
         {
-            if(current->location.heap_location == __prev)
+            if(current->location == __prev)
             {
                 found = true;
-                current->location.status = __alloc;
-                current->location.heap_location = heap_ptr;
+                current->location = heap_ptr;
                 break;
             }
         }
@@ -99,8 +91,7 @@ void *heap_calloc(size_t __nmemb, size_t __size)
     void *heap_ptr = calloc(__nmemb, __size);
     if(heap_ptr != NULL)
     {
-        struct location __loc = {heap_ptr, __alloc};
-        push_location(&__loc); 
+        push_location(heap_ptr); 
     }   
     else
     {
@@ -110,20 +101,20 @@ void *heap_calloc(size_t __nmemb, size_t __size)
 }
 
 
-void heap_free(void *__add)
+void heap_free(void *__ptr)
 {
-    if(__add == NULL || (record == NULL))
+    if(__ptr == NULL)
     {
         return;
     }
     bool found = false;
     for(struct __node *current = record; current; current = current->next)
     {
-        if((current->location.heap_location == __add) && current->location.status == __alloc)
+        if(current->location == __ptr)
         {
             found = true;
-            current->location.status = __freed;
-            free(current->location.heap_location);
+            free(current->location);
+            current->location = NULL;
             break;
         }
     }
@@ -136,20 +127,28 @@ void heap_free(void *__add)
 
 void show_record(void)
 {
+    if(record == NULL)
+    {
+        puts("No memory blocks have been allocated.");
+        return;
+    }
+    else
+    {
+        printf("\nYour heap allocations starts at\n%c", '{');
+    }
     size_t i = 0;
-    printf("%c", '{');
     for(struct __node *current = record; current; current = current->next, i++)
     {
-        if(i && i % 4 == 0)
+        if(current->location != NULL)
         {
-            puts("");
-        }
-        if(current->location.status == __alloc)
-        {
-            printf("%p, ", current->location.heap_location);
+            if(i && i % 4 == 0)
+            {
+                printf("%s", "\n ");
+            }
+            printf("%p, ", current->location);
         }
     }
-    printf("\033[2D%c", '}');
+    i ? printf("\033[2D%c\n", '}') : 0; 
 }
 
 
@@ -162,9 +161,9 @@ void tear_down(void)
     struct __node *tmp = NULL;
     for(; record; )
     {
-        if(record->location.status == __alloc)
+        if(record->location != NULL)
         {
-            free(record->location.heap_location);
+            free(record->location);
         }
         tmp = record;
         record = record->next;
