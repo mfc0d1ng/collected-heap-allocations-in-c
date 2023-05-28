@@ -14,22 +14,17 @@ int main(void)
     ptr = (char *) heap_realloc(ptr, 20);
     memcpy(ptr, "Hello world, Again.", 20);
 
-    puts(ptr);
-
-    // show_record();    
+    puts(ptr);    
     
-    /*  
-    // Try this
-    free(ptr);
-    */
+    /* Try this */
+    /*  free(ptr); */
     
-    /*
-    // Try this
-    for(int i = 0; i < 1000000; i++)
+    for(int i = 0; i < 50; i++)
     {
-        heap_malloc(20);
+        heap_malloc(25);
     }
+
     show_record();
-    */
+    
     return EXIT_SUCCESS;
 }
