@@ -1,9 +1,6 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-#define  __freed     0x0
-#define  __alloc     0x1
-
 /* Allocate SIZE bytes of memory. */
 extern void *heap_malloc(size_t __size);
 
